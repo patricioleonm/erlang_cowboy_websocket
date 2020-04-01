@@ -14,8 +14,10 @@ start(_StartType, _StartArgs) ->
     lager:set_loglevel(lager_console_backend, debug),
     Dispatch = cowboy_router:compile([
         {'_', [
-            {"/", cowboy_static, {priv_file, erlang1, "index.html"} }]},
-            {"/websocket", websocket_handler, []}
+            {"/", cowboy_static, {priv_file, erlang1, "index.html"} },            
+            {"/websocket", websocket_handler, []},
+            {"/[...]", cowboy_static, {priv_dir, erlang1, ""} }
+        ]}
     ]),
     {ok, _} = cowboy:start_clear(my_http_listener,
         [{port, 8080}],
