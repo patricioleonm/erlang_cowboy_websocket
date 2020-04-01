@@ -1,47 +1,62 @@
 <!DOCTYPE HTML>
-<html>
-<head>
-<script type="text/javascript">
-var ws = new Object;
-
-function send()
-{
-    ws.send("hi!");
-    console.log('sent');
-}
-
-function open()
-{
-    if (!("WebSocket" in window)) {
-        alert("WebSocket NOT supported by your Browser!");
-        return;
-    }
-    console.log('open');
-    ws = new WebSocket("ws://"+window.location.host+"/websocket");
-    ws.onopen = function() {
-        console.log('connected');
-    };
-    ws.onmessage = function (evt)
-    {
-        var received_msg = evt.data;
-        console.log("Received: " + received_msg);
-        var txt = document.createTextNode("Got from server: " + received_msg);
-        document.getElementById('messages').appendChild(txt);
-    };
-    ws.onclose = function()
-    {
-        // websocket is closed.
-        console.log('close');
-    };
-}
-</script>
-</head>
-<body>
-<div id="sse">
-   <a href="javascript:open()">Open WebSocket</a><br/>
-   <a href="javascript:send()">Send hi</a>
-</div>
-<div id="messages">
-</div>
+<html lang="en">
+    <head>
+        <title>Erlang Cowboy Websocket example</title>
+    </head>
+    <body>
+        <div>
+            <a href="javascript:open()">Open WebSocket</a><br/>
+            <a href="javascript:send()">Send message to Websocket</a><br/>
+            <a href="javascript:close()">Close WebSocket</a>            
+        </div>
+        <form name="fmessage">
+            <input type="text" name="message" value="" placeholder="write a message to send" />
+        </form>
+        <hr>        
+        <div id="messages"></div>
 </body>
+<script type="text/javascript">
+    var ws = new Object;
+
+    function send()
+    {
+        let message = window.document.fmessage.message.value || "hello from client!";
+        ws.send(message);
+        console.log('sent');
+    }
+
+    function close() {
+        console.log('close');
+        ws.close();
+    }
+
+    function open()
+    {
+        if (!("WebSocket" in window)) {
+            alert("WebSocket NOT supported by your Browser!");
+            return;
+        }
+
+        console.log('open');
+        ws = new WebSocket("ws://" + window.location.host + "/websocket");
+        ws.onopen = function() {
+            console.log('connected');
+        };
+        ws.onmessage = function (evt)
+        {
+            var received_msg = evt.data;
+            console.log("Received: " + received_msg);
+            var txt = document.createTextNode("Got from server: " + received_msg);
+            var br = document.createElement("br");
+            const eMessage = document.getElementById('messages');
+            eMessage.appendChild(txt);
+            eMessage.appendChild(br);
+        };
+
+        ws.onclose = function() {
+            // websocket is closed.
+            console.log('closed');
+        };
+    }
+</script>
 </html>
