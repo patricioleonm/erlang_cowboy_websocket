@@ -1,7 +1,7 @@
 erlang cowboy websocket
 =====
 
-An OTP application, to show how to implement a basic websocket using cowboy and erlang, lager added to show messaged on console, rebar3 needed to comiple and generate release, more info in https://www.rebar3.org/
+An OTP application, to show how to implement a basic websocket using cowboy and erlang, lager added to show message on console, rebar3 needed to compile and generate release, more info in https://www.rebar3.org/
 
 Build
 -----
